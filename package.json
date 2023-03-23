@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build --base=/~samuelep/",
+    "build": "vite build --base=/~samuelep/React/Week1/forms",
     "preview": "vite preview"
   },
   "dependencies": {
