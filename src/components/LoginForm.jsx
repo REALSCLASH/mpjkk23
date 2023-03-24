@@ -1,12 +1,48 @@
-import React from 'react'
-import PropTypes from 'prop-types'
 
-const LoginForm = props => {
+
+import PropTypes from 'prop-types';
+import React from 'react';
+import useForm from '../hooks/FormHooks';
+
+const LoginForm = (props) => {
+  const initValues = {
+    username: '',
+    password: '',
+
+  };
+
+  const doRegister = () => {
+    console.log('submitted', inputs);
+  };
+
+  const {inputs, handleSubmit, handleInputChange} = useForm(
+    doRegister,
+    initValues
+  );
+
   return (
-    <div>LoginForm</div>
-  )
-}
+    <>
+      <form onSubmit={handleSubmit}>
+        <input
+          name="username"
+          placeholder="Username"
+          onChange={handleInputChange}
+          value = {inputs.username}
+        />
+        <input
+          name="password"
+          type="password"
+          placeholder="Password"
+          onChange={handleInputChange}
+          value ={inputs.password}
+        />
 
-LoginForm.propTypes = {}
+        <button type="submit">Login</button>
+      </form>
+    </>
+  );
+};
 
-export default LoginForm
+LoginForm.propTypes = {};
+
+export default LoginForm;
