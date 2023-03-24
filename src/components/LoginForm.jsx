@@ -1,22 +1,27 @@
-
-
 import PropTypes from 'prop-types';
 import React from 'react';
+import {useAuthentication} from '../hooks/apiHooks';
 import useForm from '../hooks/FormHooks';
 
 const LoginForm = (props) => {
+  const {postLogin} = useAuthentication();
+
   const initValues = {
     username: '',
     password: '',
-
   };
 
-  const doRegister = () => {
-    console.log('submitted', inputs);
+  const doLogin = async () => {
+    try {
+      const loginResult = await postLogin(inputs);
+      alert(loginResult.message);
+    } catch (error) {
+      alert(error.message);
+    }
   };
 
   const {inputs, handleSubmit, handleInputChange} = useForm(
-    doRegister,
+    doLogin,
     initValues
   );
 
@@ -27,16 +32,15 @@ const LoginForm = (props) => {
           name="username"
           placeholder="Username"
           onChange={handleInputChange}
-          value = {inputs.username}
+          value={inputs.username}
         />
         <input
           name="password"
           type="password"
           placeholder="Password"
           onChange={handleInputChange}
-          value ={inputs.password}
+          value={inputs.password}
         />
-
         <button type="submit">Login</button>
       </form>
     </>
