@@ -1,10 +1,9 @@
 import PropTypes from 'prop-types';
-import React from 'react';
 import useForm from '../hooks/FormHooks';
-import { useUser } from '../hooks/ApiHooks';
+import {useUser} from '../hooks/ApiHooks';
 
 const RegisterForm = (props) => {
-const {postUser} = useUser();
+  const {postUser, getCheckUser} = useUser();
 
   const initValues = {
     username: '',
@@ -13,14 +12,18 @@ const {postUser} = useUser();
     full_name: '',
   };
 
-  const doRegister = async() => {
+  const doRegister = async () => {
     try {
-     const userResult = await postUser(inputs);
-     alert(userResult.message);
-
+      const userResult = await postUser(inputs);
+      alert(userResult.message);
     } catch (error) {
       alert(error.message);
     }
+  };
+
+  const handleUsername = async () => {
+    const {available} = await getCheckUser(inputs.username);
+    available || alert('Username not available');
   };
 
   const {inputs, handleSubmit, handleInputChange} = useForm(
@@ -35,27 +38,28 @@ const {postUser} = useUser();
           name="username"
           placeholder="Username"
           onChange={handleInputChange}
-          value = {inputs.username}
+          value={inputs.username}
+          onBlur={handleUsername}
         />
         <input
           name="password"
           type="password"
           placeholder="Password"
           onChange={handleInputChange}
-          value ={inputs.password}
+          value={inputs.password}
         />
         <input
           name="email"
           type="email"
           placeholder="Email"
           onChange={handleInputChange}
-          value = {inputs.email}
+          value={inputs.email}
         />
         <input
           name="full_name"
           placeholder="Full name"
           onChange={handleInputChange}
-          value ={inputs.full_name}
+          value={inputs.full_name}
         />
         <button type="submit">Register</button>
       </form>
