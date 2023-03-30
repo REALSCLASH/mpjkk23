@@ -1,12 +1,17 @@
-import React from 'react'
-import PropTypes from 'prop-types'
+import React from 'react';
+import {useContext, useEffect} from 'react';
+import {Navigate} from 'react-router-dom';
+import {MediaContext} from '../contexts/MediaContext';
 
-const Logout = props => {
-  return (
-    <div>Logout</div>
-  )
-}
+const Logout = () => {
+  const {setUser} = useContext(MediaContext);
 
-Logout.propTypes = {}
+  useEffect(() => {
+    setUser(null);
+    localStorage.removeItem('userToken');
+  }, []);
 
-export default Logout
+  return <Navigate to="/" />;
+};
+
+export default Logout;
