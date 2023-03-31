@@ -62,7 +62,10 @@ const useUser = () => {
     return await doFetch(baseUrl + 'users/user', options);
   };
 
-  const getCheckUser = async (username) => {};
+  const getCheckUser = async (username) => {
+    const {available} = await doFetch(baseUrl + 'users/username/' + username);
+    return available;
+  };
 
   return {postUser, getUserByToken, getCheckUser};
 };
@@ -81,4 +84,29 @@ const useAuthentication = () => {
   return {postLogin};
 };
 
-export {useMedia, useUser, useAuthentication};
+const useTag = () => {
+  const getTag = async (tag) => {
+    const tagResult = await doFetch(baseUrl + 'tags/' + tag);
+    if (tagResult.length > 0) {
+      return tagResult;
+    } else {
+      throw new Error('Tag not found');
+    }
+  };
+
+  const postTag = async (data, token) => {
+    const fetchOptions = {
+      method: 'POST',
+      headers: {
+        'x-access-token': token,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    };
+    return await doFetch(baseUrl + 'tags', fetchOptions);
+  };
+
+  return {getTag, postTag};
+};
+
+export {useMedia, useUser, useAuthentication, useTag};
