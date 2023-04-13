@@ -1,5 +1,6 @@
-import {useState, useEffect} from 'react';
-import {baseUrl} from '../utils/variables';
+import {useState, useEffect, useContext} from 'react';
+import {appId, baseUrl} from '../utils/variables';
+import {MediaContext} from '../contexts/MediaContext';
 
 const doFetch = async (url, options) => {
   const response = await fetch(url, options);
@@ -13,11 +14,19 @@ const doFetch = async (url, options) => {
   return json;
 };
 
-const useMedia = () => {
+const useMedia = (myFilesOnly) => {
   const [mediaArray, setMediaArray] = useState([]);
+  const {user} = useContext(MediaContext);
   const getMedia = async () => {
     try {
-      const files = await doFetch(baseUrl + 'media');
+      let files = await useTag().getTag(appId);
+
+      if (myFilesOnly) {
+        files = files.filter((file) => {
+          return file.user_id === user.user_id;
+        });
+      }
+
       const filesWithThumbnail = await Promise.all(
         files.map(async (file) => {
           return await doFetch(baseUrl + 'media/' + file.file_id);
@@ -37,7 +46,18 @@ const useMedia = () => {
     }
   }, []);
 
-  return {mediaArray};
+  const postMedia = async (data, token) => {
+    const options = {
+      method: 'POST',
+      headers: {
+        'x-access-token': token,
+      },
+      body: data,
+    };
+    return await doFetch(baseUrl + 'media', options);
+  };
+
+  return {mediaArray, postMedia};
 };
 
 const useUser = () => {
@@ -67,7 +87,17 @@ const useUser = () => {
     return available;
   };
 
-  return {postUser, getUserByToken, getCheckUser};
+  const getUser = async (id, token) => {
+    const options = {
+      method: 'GET',
+      headers: {
+        'x-access-token': token,
+      },
+    };
+    return await doFetch(baseUrl + 'users/' + id, options);
+  };
+
+  return {postUser, getUserByToken, getCheckUser, getUser};
 };
 
 const useAuthentication = () => {

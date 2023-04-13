@@ -1,10 +1,10 @@
-import {Button, TextField} from '@mui/material';
-
+import {Box, Button, Container, TextField} from '@mui/material';
+import PropTypes from 'prop-types';
 import React from 'react';
 import {useContext} from 'react';
 import {useNavigate} from 'react-router-dom';
 import {MediaContext} from '../contexts/MediaContext';
-import {useAuthentication} from '../hooks/apiHooks';
+import {useAuthentication} from '../hooks/ApiHooks';
 import useForm from '../hooks/FormHooks';
 
 const LoginForm = (props) => {
@@ -34,13 +34,13 @@ const LoginForm = (props) => {
   );
 
   return (
-    <>
-      <form onSubmit={handleSubmit}>
+    <Container maxWidth="xs">
+      <Box component="form" onSubmit={handleSubmit}>
         <TextField
           fullWidth
           margin="dense"
           name="username"
-          placeholder="Username"
+          label="Username"
           onChange={handleInputChange}
           value={inputs.username}
         />
@@ -49,15 +49,15 @@ const LoginForm = (props) => {
           margin="dense"
           name="password"
           type="password"
-          placeholder="Password"
+          label="Password"
           onChange={handleInputChange}
           value={inputs.password}
         />
         <Button fullWidth sx={{mt: 1}} variant="contained" type="submit">
           Login
         </Button>
-      </form>
-    </>
+      </Box>
+    </Container>
   );
 };
 

@@ -1,16 +1,16 @@
-import {Typography} from '@mui/material';
 import React from 'react';
+import {Typography} from '@mui/material';
 import MediaTable from '../components/MediaTable';
 
-const Home = () => {
+const MyFiles = () => {
   return (
     <>
       <Typography component="h1" variant="h3">
-        Home
+        My Files
       </Typography>
-      <MediaTable />
+      <MediaTable myFilesOnly={true} />
     </>
   );
 };
 
-export default Home;
+export default MyFiles;
