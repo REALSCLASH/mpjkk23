@@ -31,6 +31,7 @@ const MediaRow = ({file}) => {
       />
     </ImageListItem>
   );
+
 };
 
 MediaRow.propTypes = {
