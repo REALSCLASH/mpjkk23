@@ -5,7 +5,7 @@ import {mediaUrl} from '../utils/variables';
 import {useMedia} from '../hooks/ApiHooks';
 import React from 'react';
 
-const Update = (props) => {
+const Update = () => {
   const {putMedia} = useMedia();
   const navigate = useNavigate();
   const {state} = useLocation();
@@ -43,8 +43,9 @@ const Update = (props) => {
       };
       const data = {
         title: inputs.title,
-        description: allData,
+        description: JSON.stringify(allData),
       };
+
       const userToken = localStorage.getItem('userToken');
       const updateResult = await putMedia(file.file_id, data, userToken);
       console.log('doUpdate', updateResult);
@@ -134,7 +135,5 @@ const Update = (props) => {
     </Box>
   );
 };
-
-Update.propTypes = {};
 
 export default Update;
